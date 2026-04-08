@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS erapor_sd COLLATE utf8mb4_unicode_ci;
+GRANT ALL PRIVILEGES ON erapor_sd.* TO 'root'@'%';
+FLUSH PRIVILEGES;
