@@ -40,6 +40,9 @@ def create_app(config_name=None):
         from app.modules.sekolah.routes import sekolah_bp
         app.register_blueprint(sekolah_bp, url_prefix='/sekolah')
 
+        from app.modules.guru.routes import guru_bp
+        app.register_blueprint(guru_bp, url_prefix='/guru')
+
     @app.route('/')
     def index():
         return redirect(url_for('auth.login'))
