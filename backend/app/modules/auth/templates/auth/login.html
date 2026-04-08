@@ -1,0 +1,173 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Login - E-Rapor SD{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        /* Soft, premium gradient background */
+        background: linear-gradient(135deg, #f6f8fd 0%, #f1f5f9 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-wrapper {
+        width: 100%;
+        max-width: 420px;
+        padding: 15px;
+    }
+
+    /* Glassmorphism styling */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
+    }
+
+    .auth-header {
+        text-align: center;
+        padding: 40px 30px 20px;
+    }
+
+    .auth-header h1 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 5px;
+    }
+
+    .auth-header p {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .auth-icon-container {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        color: white;
+        font-size: 32px;
+        box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+    }
+
+    .auth-body {
+        padding: 20px 30px 40px;
+    }
+
+    .custom-input {
+        background-color: rgba(248, 250, 252, 0.8);
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 15px;
+        transition: all 0.2s ease;
+    }
+
+    .custom-input:focus {
+        background-color: #ffffff;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    .custom-btn {
+        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+        transform: translateY(-2px);
+    }
+    
+    .custom-btn:active {
+        transform: translateY(0);
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="glass-card">
+        <div class="auth-header">
+            <div class="auth-icon-container">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h1>E-Rapor SD</h1>
+            <p>Sistem Penilaian Akademik Terpadu</p>
+        </div>
+        
+        <div class="auth-body">
+            <form method="POST" action="{{ url_for('auth.login') }}">
+                {{ form.csrf_token }}
+                
+                <div class="mb-4">
+                    <label for="username" class="form-label text-secondary small fw-semibold">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted" style="border-radius: 12px 0 0 12px; border-color: #e2e8f0;">
+                            <i class="fa-regular fa-user"></i>
+                        </span>
+                        {{ form.username(class="form-control custom-input border-start-0", placeholder="Masukkan username", style="border-radius: 0 12px 12px 0;") }}
+                    </div>
+                    {% if form.username.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.username.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password" class="form-label text-secondary small fw-semibold">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted" style="border-radius: 12px 0 0 12px; border-color: #e2e8f0;">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        {{ form.password(class="form-control custom-input border-start-0", placeholder="••••••••", style="border-radius: 0 12px 12px 0;") }}
+                    </div>
+                    {% if form.password.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.password.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-4 d-flex justify-content-between align-items-center">
+                    <div class="form-check">
+                        {{ form.remember_me(class="form-check-input") }}
+                        <label class="form-check-label text-secondary small" for="remember_me">
+                            {{ form.remember_me.label.text }}
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="d-grid mb-2">
+                    {{ form.submit(class="btn custom-btn") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
