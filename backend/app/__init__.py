@@ -20,24 +20,45 @@ def create_app(config_name=None):
     migrate.init_app(app, db, directory='migrations')
     login_manager.init_app(app)
     
-    # Needs to be implemented later when user model exists
     @login_manager.user_loader
     def load_user(user_id):
-        # from app.models.user import User
-        # return User.query.get(int(user_id))
-        pass
+        from app.models.user import User
+        return db.session.get(User, int(user_id))
 
     # Register blueprints safely inside context
     with app.app_context():
         from app import models  # Ensure models are known to SQLAlchemy
         
-        # import routes / blueprints here when ready
-        # from app.modules.auth.routes import auth_bp
-        # app.register_blueprint(auth_bp)
-        pass
+        from app.modules.auth.routes import auth_bp
+        app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    @app.route('/')
+    def index():
+        from flask import redirect, url_for
+        return redirect(url_for('auth.login'))
+        
+    @app.route('/dashboard')
+    def dashboard_tmp():
+        from flask_login import login_required
+        
+        @login_required
+        def authed_view():
+            pass
+        return "Welcome to Dashboard. You are logged in!"
+
+    # Create dummy blueprint to satisfy dashboard.index
+    from flask import Blueprint
+    dummy_dashboard = Blueprint('dashboard', __name__)
+    @dummy_dashboard.route('/dashboard_dummy')
+    def index():
+        from flask import render_template_string
+        from flask_login import login_required, current_user
+        return render_template_string("<h1>Welcome {{ current_user.username }} to Dashboard</h1><a href='{{ url_for('auth.logout') }}'>Logout</a>")
+    app.register_blueprint(dummy_dashboard)
 
     @app.route('/health')
     def health_check():
-        return {'status': 'healthy', 'environment': config_name}
+        from flask import jsonify
+        return jsonify({"status": "ok", "message": "Backend service is running."})
 
     return app
