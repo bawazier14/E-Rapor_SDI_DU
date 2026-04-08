@@ -1,6 +1,7 @@
 import os
-from flask import Flask
-from app.extensions import db, migrate, login_manager
+from flask import Flask, jsonify, redirect, url_for, render_template_string
+from flask_login import login_required
+from app.extensions import db, migrate, login_manager, csrf
 
 def create_app(config_name=None):
     app = Flask(__name__)
@@ -19,6 +20,7 @@ def create_app(config_name=None):
     db.init_app(app)
     migrate.init_app(app, db, directory='migrations')
     login_manager.init_app(app)
+    csrf.init_app(app)
     
     @login_manager.user_loader
     def load_user(user_id):
@@ -32,33 +34,29 @@ def create_app(config_name=None):
         from app.modules.auth.routes import auth_bp
         app.register_blueprint(auth_bp, url_prefix='/auth')
 
+        from app.modules.users.routes import users_bp
+        app.register_blueprint(users_bp, url_prefix='/users')
+
     @app.route('/')
     def index():
-        from flask import redirect, url_for
         return redirect(url_for('auth.login'))
-        
-    @app.route('/dashboard')
-    def dashboard_tmp():
-        from flask_login import login_required
-        
-        @login_required
-        def authed_view():
-            pass
-        return "Welcome to Dashboard. You are logged in!"
 
-    # Create dummy blueprint to satisfy dashboard.index
-    from flask import Blueprint
-    dummy_dashboard = Blueprint('dashboard', __name__)
-    @dummy_dashboard.route('/dashboard_dummy')
-    def index():
-        from flask import render_template_string
-        from flask_login import login_required, current_user
-        return render_template_string("<h1>Welcome {{ current_user.username }} to Dashboard</h1><a href='{{ url_for('auth.logout') }}'>Logout</a>")
-    app.register_blueprint(dummy_dashboard)
+    @app.route('/dashboard')
+    @login_required
+    def dashboard_tmp():
+        return render_template_string('''
+        {% extends "layouts/base.html" %}
+        {% block title %}Dashboard - E-Rapor SD{% endblock %}
+        {% block content %}
+        <div class="container py-4">
+            <h2 class="fw-bold">Dashboard</h2>
+            <p class="text-muted">Selamat datang, {{ current_user.username }}!</p>
+        </div>
+        {% endblock %}
+        ''')
 
     @app.route('/health')
     def health_check():
-        from flask import jsonify
         return jsonify({"status": "ok", "message": "Backend service is running."})
 
     return app

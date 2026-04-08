@@ -1,0 +1,79 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Tambah Pengguna - E-Rapor SD{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0" style="border-radius: 12px;">
+                <div class="card-header bg-white py-3 border-0">
+                    <div class="d-flex align-items-center">
+                        <a href="{{ url_for('users.index') }}" class="btn btn-sm btn-outline-secondary border-0 me-3">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                        <h2 class="h4 mb-0 text-gray-800 fw-bold">Tambah Pengguna Baru</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 pt-2">
+                    <form method="POST">
+                        {{ form.csrf_token }}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.username.id }}" class="form-label fw-semibold text-muted small">Username</label>
+                            {{ form.username(class="form-control form-control-lg bg-light border-0", placeholder="Masukkan username", style="font-size: 0.95rem;") }}
+                            {% if form.username.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.username.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.password.id }}" class="form-label fw-semibold text-muted small">Password</label>
+                                {{ form.password(class="form-control form-control-lg bg-light border-0", placeholder="••••••••", style="font-size: 0.95rem;") }}
+                                {% if form.password.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.password.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.password_confirm.id }}" class="form-label fw-semibold text-muted small">Konfirmasi Password</label>
+                                {{ form.password_confirm(class="form-control form-control-lg bg-light border-0", placeholder="••••••••", style="font-size: 0.95rem;") }}
+                                {% if form.password_confirm.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.password_confirm.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.role_id.id }}" class="form-label fw-semibold text-muted small">Role / Hak Akses</label>
+                            {{ form.role_id(class="form-select form-select-lg bg-light border-0", style="font-size: 0.95rem;") }}
+                            {% if form.role_id.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in form.role_id.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                {{ form.is_active(class="form-check-input") }}
+                                <label class="form-check-label fw-medium text-muted small" for="{{ form.is_active.id }}">Status Akun Aktif</label>
+                            </div>
+                        </div>
+
+                        <div class="d-grid pt-2">
+                            {{ form.submit(class="btn btn-primary btn-lg shadow-sm fw-bold", style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); border:none;") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
