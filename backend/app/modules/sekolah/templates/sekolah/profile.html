@@ -1,0 +1,152 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Profil Sekolah - E-Rapor SD{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- School Card Info -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0" style="border-radius: 12px; height: 100%;">
+                <div class="card-body text-center p-4">
+                    <div class="mb-4">
+                        {% if sekolah.logo_path %}
+                            <img src="{{ url_for('static', filename=sekolah.logo_path) }}" alt="Logo Sekolah" class="img-fluid rounded shadow-sm" style="max-height: 150px; border: 4px solid #f8f9fa;">
+                        {% else %}
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center mx-auto shadow-sm" style="width: 150px; height: 150px; border: 4px solid #f8f9fa;">
+                                <i class="fa-solid fa-school fa-4x text-muted"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <h3 class="h4 fw-bold text-dark mb-1">{{ sekolah.nama }}</h3>
+                    <p class="text-muted small mb-3"><i class="fa-solid fa-fingerprint me-1"></i> NPSN: {{ sekolah.npsn }}</p>
+                    
+                    <hr class="my-3 opacity-50">
+                    
+                    <div class="text-start">
+                        <div class="mb-2">
+                            <label class="small fw-bold text-uppercase text-muted d-block mb-1">Kepala Sekolah</label>
+                            <span class="text-dark fw-medium">{{ sekolah.kepala_sekolah or '-' }}</span>
+                        </div>
+                        <div class="mb-2">
+                            <label class="small fw-bold text-uppercase text-muted d-block mb-1">NIP</label>
+                            <span class="text-dark">{{ sekolah.nip_kepala_sekolah or '-' }}</span>
+                        </div>
+                        <div class="mb-0">
+                            <label class="small fw-bold text-uppercase text-muted d-block mb-1">Alamat</label>
+                            <p class="text-dark small mb-0">{{ sekolah.alamat or '-' }}</p>
+                            <span class="text-muted small">{{ sekolah.desa_kelurahan or '' }}, {{ sekolah.kecamatan or '' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light border-0 py-3 text-center" style="border-radius: 0 0 12px 12px;">
+                    <div class="d-flex justify-content-center gap-3">
+                        {% if sekolah.email %}
+                            <a href="mailto:{{ sekolah.email }}" class="text-primary" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                        {% endif %}
+                        {% if sekolah.website %}
+                            <a href="{{ sekolah.website }}" target="_blank" class="text-primary" title="Website"><i class="fa-solid fa-globe"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow-sm border-0" style="border-radius: 12px;">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-pen-to-square me-2 text-primary"></i>Edit Profil Sekolah</h5>
+                </div>
+                <div class="card-body p-4 pt-2">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.csrf_token }}
+                        
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label for="{{ form.nama.id }}" class="form-label fw-semibold text-muted small">Nama Satuan Pendidikan</label>
+                                {{ form.nama(class="form-control bg-light border-0", placeholder="Masukkan nama sekolah") }}
+                                {% for error in form.nama.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.npsn.id }}" class="form-label fw-semibold text-muted small">NPSN</label>
+                                {{ form.npsn(class="form-control bg-light border-0", placeholder="00000000") }}
+                                {% for error in form.npsn.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.kepala_sekolah.id }}" class="form-label fw-semibold text-muted small">Nama Kepala Sekolah</label>
+                                {{ form.kepala_sekolah(class="form-control bg-light border-0", placeholder="Nama Lengkap & Gelar") }}
+                                {% for error in form.kepala_sekolah.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.nip_kepala_sekolah.id }}" class="form-label fw-semibold text-muted small">NIP Kepala Sekolah</label>
+                                {{ form.nip_kepala_sekolah(class="form-control bg-light border-0", placeholder="19XXXXXXXXXXXXX") }}
+                                {% for error in form.nip_kepala_sekolah.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.alamat.id }}" class="form-label fw-semibold text-muted small">Alamat Lengkap</label>
+                            {{ form.alamat(class="form-control bg-light border-0", rows=2, placeholder="Jalan, No, RT/RW") }}
+                            {% for error in form.alamat.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.desa_kelurahan.id }}" class="form-label fw-semibold text-muted small">Desa / Kelurahan</label>
+                                {{ form.desa_kelurahan(class="form-control bg-light border-0") }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.kecamatan.id }}" class="form-label fw-semibold text-muted small">Kecamatan</label>
+                                {{ form.kecamatan(class="form-control bg-light border-0") }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.kode_pos.id }}" class="form-label fw-semibold text-muted small">Kode Pos</label>
+                                {{ form.kode_pos(class="form-control bg-light border-0") }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.kabupaten_kota.id }}" class="form-label fw-semibold text-muted small">Kabupaten / Kota</label>
+                                {{ form.kabupaten_kota(class="form-control bg-light border-0") }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.provinsi.id }}" class="form-label fw-semibold text-muted small">Provinsi</label>
+                                {{ form.provinsi(class="form-control bg-light border-0") }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.website.id }}" class="form-label fw-semibold text-muted small">Website</label>
+                                {{ form.website(class="form-control bg-light border-0", placeholder="https://...") }}
+                                {% for error in form.website.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.email.id }}" class="form-label fw-semibold text-muted small">Email Sekolah</label>
+                                {{ form.email(class="form-control bg-light border-0") }}
+                                {% for error in form.email.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.logo.id }}" class="form-label fw-semibold text-muted small">Update Logo Sekolah</label>
+                            {{ form.logo(class="form-control bg-light border-0") }}
+                            <div class="form-text small text-muted">Format yang diizinkan: JPG, PNG. Maksimal 2MB.</div>
+                            {% for error in form.logo.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                        </div>
+
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary btn-lg shadow-sm fw-bold", style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); border:none;") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
