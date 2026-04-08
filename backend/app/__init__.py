@@ -29,6 +29,8 @@ def create_app(config_name=None):
 
     # Register blueprints safely inside context
     with app.app_context():
+        from app import models  # Ensure models are known to SQLAlchemy
+        
         # import routes / blueprints here when ready
         # from app.modules.auth.routes import auth_bp
         # app.register_blueprint(auth_bp)
