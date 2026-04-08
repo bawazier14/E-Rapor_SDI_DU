@@ -1,0 +1,20 @@
+# Core Application Dependencies
+Flask==3.0.3
+Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.0.7
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+SQLAlchemy==2.0.29
+WTForms==3.1.2
+
+# Database Driver
+mysqlclient==2.2.4
+
+# Reporting & Files
+WeasyPrint==61.2
+openpyxl==3.1.2
+Pillow==10.3.0
+
+# Utilities
+python-dotenv==1.0.1
+email-validator==2.1.1
