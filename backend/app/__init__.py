@@ -38,8 +38,12 @@ def create_app(config_name=None):
         return redirect(url_for('auth.login'))
         
     @app.route('/dashboard')
-    @login_manager.user_loader # wait, not user loader. Just login_required
     def dashboard_tmp():
+        from flask_login import login_required
+        
+        @login_required
+        def authed_view():
+            pass
         return "Welcome to Dashboard. You are logged in!"
 
     # Create dummy blueprint to satisfy dashboard.index
