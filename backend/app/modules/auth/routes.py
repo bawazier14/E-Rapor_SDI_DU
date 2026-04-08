@@ -9,7 +9,7 @@ from app.modules.auth.services import AuthService
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard.index')) # Assuming a dashboard module
+        return redirect(url_for('dashboard_tmp')) # Assuming a dashboard module
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -22,7 +22,7 @@ def login():
         
         next_page = request.args.get('next')
         if not next_page or urlparse(next_page).netloc != '':
-            next_page = url_for('dashboard.index') # TODO: create dashboard route
+            next_page = url_for('dashboard_tmp') # TODO: create dashboard route
             
         return redirect(next_page)
         

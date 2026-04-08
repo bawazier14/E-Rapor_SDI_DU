@@ -27,9 +27,41 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    
+    <!-- Navbar -->
+    {% if current_user.is_authenticated %}
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/"><i class="fa-solid fa-graduation-cap me-2"></i>E-Rapor SD</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'dashboard_tmp' %}active{% endif %}" href="{{ url_for('dashboard_tmp') }}"><i class="fa-solid fa-house me-1"></i> Dashboard</a>
+                    </li>
+                    {% if current_user.has_role('Admin') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'users.' in request.endpoint %}active{% endif %}" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-gear me-1"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-sm" aria-labelledby="adminDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('users.index') }}"><i class="fa-solid fa-users me-2"></i>Manajemen Pengguna</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="d-flex align-items-center text-white">
+                    <span class="me-3 small"><i class="fa-regular fa-user me-1"></i> {{ current_user.username }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-light text-primary fw-semibold"><i class="fa-solid fa-right-from-bracket me-1"></i> Keluar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
     <!-- Flash Messages Component -->
-    <div class="container mt-3 absolute-top" style="z-index: 1050; position: absolute; top:0; left:50%; transform: translateX(-50%); width: 100%; max-width: 600px;">
+    <div class="container mt-3 {% if not current_user.is_authenticated %}absolute-top{% endif %}" style="{% if not current_user.is_authenticated %}z-index: 1050; position: absolute; top:0; left:50%; transform: translateX(-50%); width: 100%; max-width: 600px;{% endif %}">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
