@@ -37,6 +37,9 @@ def create_app(config_name=None):
         from app.modules.users.routes import users_bp
         app.register_blueprint(users_bp, url_prefix='/users')
 
+        from app.modules.sekolah.routes import sekolah_bp
+        app.register_blueprint(sekolah_bp, url_prefix='/sekolah')
+
     @app.route('/')
     def index():
         return redirect(url_for('auth.login'))
