@@ -1,0 +1,64 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Tambah Tingkat Kelas - E-Rapor SD{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('kelas.index') }}">Daftar Tingkat</a></li>
+            <li class="breadcrumb-item active">Tambah Tingkat</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                    <h4 class="fw-bold text-dark mb-0">Tambah Tingkat Baru</h4>
+                    <p class="text-muted small">Input master data tingkat kelas baru.</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('kelas.create') }}">
+                        {{ form.csrf_token }}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-uppercase">Tingkat (Angka)</label>
+                            {{ form.tingkat(class="form-control" + (" is-invalid" if form.tingkat.errors else ""), placeholder="Contoh: 1") }}
+                            {% for error in form.tingkat.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-uppercase">Nama Tingkat</label>
+                            {{ form.nama_tingkat(class="form-control" + (" is-invalid" if form.nama_tingkat.errors else ""), placeholder="Contoh: Kelas 1") }}
+                            {% for error in form.nama_tingkat.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-uppercase">Fase</label>
+                            {{ form.fase(class="form-select" + (" is-invalid" if form.fase.errors else "")) }}
+                            {% for error in form.fase.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            <div class="form-text small mt-2">
+                                <span class="badge bg-light text-dark border me-1">A: 1-2</span>
+                                <span class="badge bg-light text-dark border me-1">B: 3-4</span>
+                                <span class="badge bg-light text-dark border">C: 5-6</span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary py-2 fw-bold hover-lift") }}
+                            <a href="{{ url_for('kelas.index') }}" class="btn btn-light py-2 fw-bold">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
