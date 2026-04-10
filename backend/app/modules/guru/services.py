@@ -93,3 +93,18 @@ class GuruService:
         db.session.flush()
         
         guru.user_id = user.id
+
+    @staticmethod
+    def create_skeleton_guru(user):
+        """Creates a basic Guru record linked to an existing User."""
+        # Sanitize username into a readable name
+        display_name = user.username.replace('.', ' ').replace('_', ' ').title()
+        
+        guru = Guru(
+            nama_lengkap=display_name,
+            user_id=user.id,
+            status_aktif=user.is_active
+        )
+        db.session.add(guru)
+        db.session.commit()
+        return guru

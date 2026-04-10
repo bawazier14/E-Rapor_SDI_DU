@@ -59,10 +59,15 @@
                             <td>{{ 'Laki-laki' if guru.jenis_kelamin == 'L' else 'Perempuan' }}</td>
                             <td class="text-center">
                                 {% if guru.user %}
-                                    <span class="badge bg-soft-success text-success border border-success-subtle rounded-pill fw-medium px-3">
-                                        <i class="fa-solid fa-circle-check me-1 small"></i> Terhubung
-                                    </span>
-                                    <div class="small text-muted mt-1">{{ guru.user.username }}</div>
+                                    <div class="mb-1">
+                                        <span class="badge bg-soft-success text-success border border-success-subtle rounded-pill fw-medium px-3">
+                                            <i class="fa-solid fa-circle-check me-1 small"></i> Terhubung
+                                        </span>
+                                    </div>
+                                    <div class="small fw-bold">{{ guru.user.username }}</div>
+                                    {% if not guru.user.is_active %}
+                                        <div class="small text-danger"><i class="fa-solid fa-ban me-1"></i> Akun Dinonaktifkan</div>
+                                    {% endif %}
                                 {% else %}
                                     <span class="badge bg-light text-muted border border-secondary-subtle rounded-pill fw-medium px-3">Tanpa Akun</span>
                                 {% endif %}

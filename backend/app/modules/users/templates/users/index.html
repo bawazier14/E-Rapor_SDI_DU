@@ -24,6 +24,7 @@
                             <th class="ps-4">ID</th>
                             <th>Username</th>
                             <th>Role</th>
+                            <th>Profil</th>
                             <th>Status Akun</th>
                             <th class="text-end pe-4">Aksi</th>
                         </tr>
@@ -42,6 +43,23 @@
                             </td>
                             <td>
                                 <span class="badge bg-secondary rounded-pill fw-normal px-2 py-1">{{ user.role.name }}</span>
+                            </td>
+                             <td>
+                                {% if user.role.name == 'Guru' %}
+                                    {% if user.guru %}
+                                        <a href="{{ url_for('guru.edit', id=user.guru.id) }}" class="text-decoration-none">
+                                            <span class="badge bg-info-subtle text-info rounded-pill fw-medium px-2 py-1 border border-info-subtle">
+                                                <i class="fa-solid fa-chalkboard-user me-1"></i> Profil Guru
+                                            </span>
+                                        </a>
+                                    {% else %}
+                                        <span class="badge bg-warning-subtle text-warning rounded-pill fw-medium px-2 py-1 border border-warning-subtle">Profil Belum Ada</span>
+                                    {% endif %}
+                                {% elif user.role.name == 'Kepala Sekolah' %}
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill fw-medium px-2 py-1 border border-primary-subtle">Kepsek</span>
+                                {% else %}
+                                    <span class="badge bg-secondary-subtle text-secondary rounded-pill fw-medium px-2 py-1 border border-secondary-subtle">-</span>
+                                {% endif %}
                             </td>
                             <td>
                                 {% if user.is_active %}
