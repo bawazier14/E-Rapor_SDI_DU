@@ -1,0 +1,115 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Tambah Siswa - E-Rapor SD{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex align-items-center mb-4">
+                <a href="{{ url_for('siswa.index') }}" class="btn btn-link text-decoration-none p-0 me-3">
+                    <i class="fa-solid fa-arrow-left fa-lg"></i>
+                </a>
+                <h2 class="fw-bold mb-0">Tambah Siswa Baru</h2>
+            </div>
+
+            <form method="POST" action="{{ url_for('siswa.create') }}">
+                {{ form.csrf_token }}
+                
+                <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="mb-0 fw-bold text-primary"><i class="fa-solid fa-user me-2"></i>Data Identitas Siswa</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Nama Lengkap</label>
+                                {{ form.nama_lengkap(class="form-control" + (" is-invalid" if form.nama_lengkap.errors else ""), placeholder="Nama Lengkap Siswa") }}
+                                {% for error in form.nama_lengkap.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold small">NISN (Opsional)</label>
+                                {{ form.nisn(class="form-control", placeholder="NISN") }}
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold small">NIS (Opsional)</label>
+                                {{ form.nis(class="form-control", placeholder="NIS") }}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small">Jenis Kelamin</label>
+                                {{ form.jenis_kelamin(class="form-select") }}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small">Tempat Lahir</label>
+                                {{ form.tempat_lahir(class="form-control", placeholder="Contoh: Jakarta") }}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small">Tanggal Lahir</label>
+                                {{ form.tanggal_lahir(class="form-control", type="date") }}
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small">Agama</label>
+                                {{ form.agama(class="form-control", placeholder="Agama") }}
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label fw-bold small">Alamat Domisili</label>
+                                {{ form.alamat(class="form-control", rows="2", placeholder="Alamat Lengkap") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
+                    <div class="card-header bg-white py-3 border-0">
+                        <h5 class="mb-0 fw-bold text-primary"><i class="fa-solid fa-users me-2"></i>Data Orang Tua / Wali</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Nama Ayah</label>
+                                {{ form.nama_ayah(class="form-control", placeholder="Nama Ayah") }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Nama Ibu</label>
+                                {{ form.nama_ibu(class="form-control", placeholder="Nama Ibu") }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Pekerjaan Ayah</label>
+                                {{ form.pekerjaan_ayah(class="form-control", placeholder="Pekerjaan") }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Pekerjaan Ibu</label>
+                                {{ form.pekerjaan_ibu(class="form-control", placeholder="Pekerjaan") }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">No HP Orang Tua</label>
+                                {{ form.no_hp_orang_tua(class="form-control", placeholder="08xxxx") }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">Alamat Orang Tua</label>
+                                {{ form.alamat_orang_tua(class="form-control", rows="1", placeholder="Alamat") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0 mb-5" style="border-radius: 12px;">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold small mb-0">Status Akademik</label>
+                                {{ form.status_aktif(class="form-select") }}
+                            </div>
+                            <div class="col text-end">
+                                <hr class="d-md-none">
+                                <a href="{{ url_for('siswa.index') }}" class="btn btn-light px-4 me-2">Batal</a>
+                                {{ form.submit(class="btn btn-primary px-4") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

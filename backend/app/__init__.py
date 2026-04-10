@@ -43,6 +43,9 @@ def create_app(config_name=None):
         from app.modules.guru.routes import guru_bp
         app.register_blueprint(guru_bp, url_prefix='/guru')
 
+        from app.modules.siswa.routes import siswa_bp
+        app.register_blueprint(siswa_bp, url_prefix='/siswa')
+
     @app.route('/')
     def index():
         return redirect(url_for('auth.login'))
