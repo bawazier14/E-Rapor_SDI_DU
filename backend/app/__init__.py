@@ -46,6 +46,9 @@ def create_app(config_name=None):
         from app.modules.siswa.routes import siswa_bp
         app.register_blueprint(siswa_bp, url_prefix='/siswa')
 
+        from app.modules.kelas import kelas_bp
+        app.register_blueprint(kelas_bp, url_prefix='/kelas')
+
     @app.route('/')
     def index():
         return redirect(url_for('auth.login'))
