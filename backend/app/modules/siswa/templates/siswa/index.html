@@ -1,0 +1,96 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ title }} - E-Rapor SD{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">Daftar Siswa</h2>
+            <p class="text-muted">Manajemen data peserta didik dan status akademik.</p>
+        </div>
+        <a href="{{ url_for('siswa.create') }}" class="btn btn-primary shadow-sm">
+            <i class="fa-solid fa-plus me-2"></i>Tambah Siswa
+        </a>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 bg-info text-white" style="border-radius: 12px;">
+                <div class="card-body">
+                    <p class="mb-1 opacity-75 small fw-bold text-uppercase">Total Siswa</p>
+                    <h3 class="fw-bold mb-0">{{ siswas|length }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0" style="border-radius: 12px;">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-muted small text-uppercase">
+                        <tr>
+                            <th class="ps-4 py-3">Siswa</th>
+                            <th class="py-3">Identitas</th>
+                            <th class="py-3">Orang Tua</th>
+                            <th class="py-3 text-center">Status</th>
+                            <th class="py-3 text-end pe-4">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for siswa in siswas %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="fa-solid fa-user-graduate text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">{{ siswa.nama_lengkap }}</div>
+                                        <small class="text-muted">{{ 'Laki-laki' if siswa.jenis_kelamin == 'L' else 'Perempuan' }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="small">NISN: {{ siswa.nisn or '-' }}</div>
+                                <div class="small text-muted">NIS: {{ siswa.nis or '-' }}</div>
+                            </td>
+                            <td>
+                                <div class="small fw-medium">{{ siswa.nama_ayah or '-' }} (Ayah)</div>
+                                <div class="small text-muted">{{ siswa.no_hp_orang_tua or '-' }}</div>
+                            </td>
+                            <td class="text-center">
+                                {% if siswa.status_aktif == 'aktif' %}
+                                    <span class="badge bg-success rounded-pill fw-normal px-2 py-1">Aktif</span>
+                                {% elif siswa.status_aktif == 'lulus' %}
+                                    <span class="badge bg-primary rounded-pill fw-normal px-2 py-1">Lulus</span>
+                                {% elif siswa.status_aktif == 'pindah' %}
+                                    <span class="badge bg-warning text-dark rounded-pill fw-normal px-2 py-1">Pindah</span>
+                                {% else %}
+                                    <span class="badge bg-danger rounded-pill fw-normal px-2 py-1">Keluar</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a href="{{ url_for('siswa.edit', id=siswa.id) }}" class="btn btn-sm btn-outline-primary" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                                    <form action="{{ url_for('siswa.delete', id=siswa.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data siswa ini?');">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">Belum ada data siswa.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
