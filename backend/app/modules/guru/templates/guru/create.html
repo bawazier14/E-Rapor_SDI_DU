@@ -1,0 +1,95 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Tambah Guru - E-Rapor SD{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('guru.index') }}">Daftar Guru</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tambah Guru</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm border-0" style="border-radius: 12px;">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-user-plus me-2 text-primary"></i>Tambah Guru Baru</h5>
+                </div>
+                <div class="card-body p-4 pt-0">
+                    <form method="POST">
+                        {{ form.csrf_token }}
+                        
+                        <div class="row mb-4">
+                            <div class="col-12 mb-3">
+                                <h6 class="text-uppercase text-muted small fw-bold border-bottom pb-2 mt-3">Informasi Utama</h6>
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label for="{{ form.nama_lengkap.id }}" class="form-label fw-semibold text-muted small">Nama Lengkap & Gelar</label>
+                                {{ form.nama_lengkap(class="form-control bg-light border-0", placeholder="Contoh: Budi Santoso, S.Pd") }}
+                                {% for error in form.nama_lengkap.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.jenis_kelamin.id }}" class="form-label fw-semibold text-muted small">Jenis Kelamin</label>
+                                {{ form.jenis_kelamin(class="form-select bg-light border-0") }}
+                                {% for error in form.jenis_kelamin.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.nip.id }}" class="form-label fw-semibold text-muted small">NIP (Opsional)</label>
+                                {{ form.nip(class="form-control bg-light border-0", placeholder="19XXXXXXXXXXXXX") }}
+                                {% for error in form.nip.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.nuptk.id }}" class="form-label fw-semibold text-muted small">NUPTK (Opsional)</label>
+                                {{ form.nuptk(class="form-control bg-light border-0", placeholder="Masukkan 16 digit NUPTK") }}
+                                {% for error in form.nuptk.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-12 mb-3">
+                                <h6 class="text-uppercase text-muted small fw-bold border-bottom pb-2">Tempat & Tanggal Lahir</h6>
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label for="{{ form.tempat_lahir.id }}" class="form-label fw-semibold text-muted small">Tempat Lahir</label>
+                                {{ form.tempat_lahir(class="form-control bg-light border-0") }}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="{{ form.tanggal_lahir.id }}" class="form-label fw-semibold text-muted small">Tanggal Lahir</label>
+                                {{ form.tanggal_lahir(class="form-control bg-light border-0", type="date") }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.agama.id }}" class="form-label fw-semibold text-muted small">Agama</label>
+                                {{ form.agama(class="form-control bg-light border-0") }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.no_hp.id }}" class="form-label fw-semibold text-muted small">No. HP</label>
+                                {{ form.no_hp(class="form-control bg-light border-0") }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6 class="text-uppercase text-muted small fw-bold border-bottom pb-2">Alamat</h6>
+                            {{ form.alamat(class="form-control bg-light border-0", rows=3) }}
+                        </div>
+
+                        <div class="bg-light p-4 rounded mb-4 shadow-sm border-start border-primary border-4">
+                            <h6 class="fw-bold mb-3"><i class="fa-solid fa-key me-2 text-primary"></i>Akses Login</h6>
+                            <div class="form-check form-switch mb-2">
+                                {{ form.create_user(class="form-check-input", role="switch") }}
+                                <label class="form-check-label fw-medium" for="{{ form.create_user.id }}">Buatkan akun guru untuk login ke sistem</label>
+                            </div>
+                            <p class="text-muted small mb-0">Jika diaktifkan, sistem akan otomatis membuat username berdasarkan nama guru dan password default <code>guru123</code>.</p>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            {{ form.submit(class="btn btn-primary btn-lg shadow-sm fw-bold", value="Simpan Data Guru") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
