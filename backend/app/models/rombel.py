@@ -11,7 +11,7 @@ class Rombel(BaseModel):
     
     tahun_ajaran = db.relationship('TahunAjaran', back_populates='rombels')
     kelas = db.relationship('Kelas', back_populates='rombels')
-    wali_kelas = db.relationship('Guru', back_populates='rombel')
+    wali_kelas = db.relationship('Guru', back_populates='rombels')
     
     # Students in this rombel
     siswas = db.relationship('Siswa', secondary='anggota_rombel', back_populates='rombels')

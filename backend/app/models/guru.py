@@ -19,8 +19,8 @@ class Guru(BaseModel):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True)
     user = db.relationship('User', back_populates='guru')
     
-    # Wali kelas
-    rombel = db.relationship('Rombel', back_populates='wali_kelas')
+    # Wali kelas (Satu guru bisa jadi wali kelas banyak rombel)
+    rombels = db.relationship('Rombel', back_populates='wali_kelas', uselist=True)
     
     # Mengajar di Rombel
     mengajar = db.relationship('Mengajar', back_populates='guru')
