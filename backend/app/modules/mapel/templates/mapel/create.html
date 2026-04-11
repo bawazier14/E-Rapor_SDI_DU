@@ -1,0 +1,88 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Tambah Mapel - E-Rapor SD{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('mapel.index') }}">Daftar Mapel</a></li>
+            <li class="breadcrumb-item active">Tambah Mapel</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                    <h4 class="fw-bold text-dark mb-0">Tambah Mata Pelajaran</h4>
+                    <p class="text-muted small">Input master data mata pelajaran baru.</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('mapel.create') }}">
+                        {{ form.csrf_token }}
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-semibold small text-uppercase">Kode Mapel</label>
+                                {{ form.kode(class="form-control" + (" is-invalid" if form.kode.errors else ""), placeholder="Contoh: PAI") }}
+                                {% for error in form.kode.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                <label class="form-label fw-semibold small text-uppercase">Nama Mata Pelajaran</label>
+                                {{ form.nama(class="form-control" + (" is-invalid" if form.nama.errors else ""), placeholder="Contoh: Pendidikan Agama Islam") }}
+                                {% for error in form.nama.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold small text-uppercase">Kelompok</label>
+                                {{ form.kelompok(class="form-select" + (" is-invalid" if form.kelompok.errors else "")) }}
+                                {% for error in form.kelompok.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-semibold small text-uppercase">Urutan Tampil <i class="fa-solid fa-circle-info text-muted ms-1" title="Semakin kecil angka, semakin atas posisinya di rapor" data-bs-toggle="tooltip"></i></label>
+                                {{ form.urutan(class="form-control" + (" is-invalid" if form.urutan.errors else ""), type="number") }}
+                                {% for error in form.urutan.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="form-check form-switch custom-switch">
+                                {{ form.status_aktif(class="form-check-input", id="flexSwitchCheckDefault") }}
+                                <label class="form-check-label fw-semibold" for="flexSwitchCheckDefault">Status Aktif</label>
+                            </div>
+                            <div class="form-text small mt-1">Hanya mapel aktif yang dapat dipilih dalam pembuatan penugasan mengajar.</div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary py-2 fw-bold hover-lift") }}
+                            <a href="{{ url_for('mapel.index') }}" class="btn btn-light py-2 fw-bold">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>
+{% endblock %}

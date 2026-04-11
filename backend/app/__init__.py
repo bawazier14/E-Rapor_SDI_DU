@@ -34,8 +34,8 @@ def create_app(config_name=None):
         from app.modules.auth.routes import auth_bp
         app.register_blueprint(auth_bp, url_prefix='/auth')
 
-        from app.modules.users.routes import users_bp
-        app.register_blueprint(users_bp, url_prefix='/users')
+        from app.modules.mapel import mapel_bp
+        app.register_blueprint(mapel_bp, url_prefix='/mapel')
 
         from app.modules.sekolah.routes import sekolah_bp
         app.register_blueprint(sekolah_bp, url_prefix='/sekolah')
